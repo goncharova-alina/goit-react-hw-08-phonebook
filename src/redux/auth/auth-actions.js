@@ -17,7 +17,7 @@ const getCurrentUserSuccess = createAction("auth/getCurrentUserSuccess");
 const getCurrentUserError = createAction("auth/getCurrentUserError");
 
 const clearError = createAction("auth/clearError");
-
+/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   registerRequest,
   registerSuccess,

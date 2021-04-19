@@ -1,26 +1,25 @@
 .container {
   min-height: 500px;
-  /* background-image: url("./b5b942fdcf396117ae6eb9a727ea97cf.png"); */
-  /* background-size: cover;
+  /* background-image: url('./b5b942fdcf396117ae6eb9a727ea97cf.png'); */
+  /* background-size: cover; */
   background-repeat: no-repeat;
-  background-position: center; */
+  background-position: center;
 }
 .title {
   display: flex;
-  justify-content: right;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
   padding-top: 100px;
-  float: right;
   margin-bottom: 100px;
-  font-family: "Kaushan Script", cursive;
-  font-size: 54px;
-  letter-spacing: 10px;
+  font-family: 'Kaushan Script', cursive;
+  font-size: 32px;
+  letter-spacing: 5px;
   color: #08831d;
 }
 .titleSpan {
   padding-top: 30px;
-  font-family: "Kaushan Script", cursive;
+  font-family: 'Kaushan Script', cursive;
   font-size: 72px;
   letter-spacing: 29px;
   line-height: 91px;

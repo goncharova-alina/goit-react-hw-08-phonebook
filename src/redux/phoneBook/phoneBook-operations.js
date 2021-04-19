@@ -1,7 +1,7 @@
-import actions from "./phoneBook-actions";
-import api from "../../service/phoneBook-api";
+import actions from './phoneBook-actions';
+import api from '../../service/phoneBook-api';
 
-const fetchContacts = () => async (dispatch) => {
+const fetchContacts = () => async dispatch => {
   dispatch(actions.fetchContactsRequest());
   try {
     const { data } = await api.fetchContacts();
@@ -11,7 +11,7 @@ const fetchContacts = () => async (dispatch) => {
   }
 };
 
-const addContact = (name, number) => async (dispatch) => {
+const addContact = (name, number) => async dispatch => {
   const contact = { name, number };
 
   dispatch(actions.addContactRequest());
@@ -23,7 +23,7 @@ const addContact = (name, number) => async (dispatch) => {
   }
 };
 
-const deleteContact = (id) => async (dispatch) => {
+const deleteContact = id => async dispatch => {
   dispatch(actions.deleteContactRequest());
   try {
     await api.deleteContact(id);
@@ -32,5 +32,5 @@ const deleteContact = (id) => async (dispatch) => {
     dispatch(actions.deleteContactError(error.message));
   }
 };
-
+/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default { fetchContacts, addContact, deleteContact };

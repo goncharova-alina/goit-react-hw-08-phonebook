@@ -62,5 +62,5 @@ const getCurrentUser = () => async (dispatch, getState) => {
     dispatch(authActions.getCurrentUserError(error.message));
   }
 };
-
+/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default { register, logIn, logOut, getCurrentUser };

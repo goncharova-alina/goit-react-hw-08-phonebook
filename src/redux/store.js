@@ -37,5 +37,5 @@ const store = configureStore({
   devTools: process.env.NODE_ENV === "development",
 });
 const persistor = persistStore(store);
-
+/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default { store, persistor };

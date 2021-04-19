@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.baseURL = "https://goit-phonebook-api.herokuapp.com";
 
-export const token = {
+const token = {
   set(token) {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   },
@@ -11,38 +11,38 @@ export const token = {
   },
 };
 
-export function signUp(credentials) {
+const signUp = (credentials) => {
   return axios.post("/users/signup", credentials);
-}
+};
 
-export function logIn(credentials) {
+const logIn = (credentials) => {
   return axios.post("/users/login", credentials);
-}
+};
 
-export function logOut() {
+const logOut = () => {
   return axios.post("/users/logout");
-}
+};
 
-export function getCurrentUser() {
+const getCurrentUser = () => {
   return axios.get("/users/current");
-}
+};
 
-export function fetchContacts() {
+const fetchContacts = () => {
   return axios.get("/contacts");
-}
+};
 
-export function addContact(contact) {
+const addContact = (contact) => {
   return axios.post("/contacts", contact);
-}
+};
 
-export function deleteContact(id) {
+const deleteContact = (id) => {
   return axios.delete(`/contacts/${id}`);
-}
+};
 
-export function updateContact(id) {
+const updateContact = (id) => {
   return axios.patch(`/contacts/${id}`);
-}
-
+};
+/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   token,
   signUp,
@@ -52,4 +52,5 @@ export default {
   fetchContacts,
   addContact,
   deleteContact,
+  updateContact,
 };

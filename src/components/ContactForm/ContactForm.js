@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import "./ContactForm.css";
-import contactsOperations from "../../redux/contacts/contactsOperations";
-import contactsSelectors from "../../redux/contacts/contactsSelectors";
+import phoneBookOperations from "../../redux/phoneBook/phoneBook-operations";
+import phoneBookSelectors from "../../redux/phoneBook/phoneBook-selectors";
 
 const INITIAL_STATE = {
   name: "",
@@ -90,11 +90,11 @@ class ContactForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  contacts: contactsSelectors.getContacts(state),
+  contacts: phoneBookSelectors.getContacts(state),
 });
 
 const mapDispatchToProps = {
-  onAddContact: contactsOperations.addContact,
+  onAddContact: phoneBookOperations.addContact,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

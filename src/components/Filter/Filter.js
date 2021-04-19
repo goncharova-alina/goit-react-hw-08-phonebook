@@ -2,23 +2,24 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import "./Filter.css";
-import contactsActions from "../../redux/contacts/contactsActions";
-import contactsSelectors from "../../redux/contacts/contactsSelectors";
+import s from "./Filter.module.css";
+import phoneBookActions from "../../redux/phoneBook/phoneBook-actions";
+import phoneBookSelectors from "../../redux/phoneBook/phoneBook-selectors";
 
 const Filter = ({ value, onChangeFilter }) => (
-  <div className="Filter">
+  <div className={s.filter}>
     <p>Find contacts by name</p>
     <input type="text" value={value} onChange={onChangeFilter} />
   </div>
 );
 
 const mapStateToProps = (state) => ({
-  value: contactsSelectors.getFilter(state),
+  value: phoneBookSelectors.getFilter(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeFilter: (e) => dispatch(contactsActions.changeFilter(e.target.value)),
+  onChangeFilter: (e) =>
+    dispatch(phoneBookActions.changeFilter(e.target.value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
@@ -28,6 +29,6 @@ Filter.defaultProps = {
 };
 
 Filter.propTypes = {
-  value: PropTypes.string,
+  // value: PropTypes.string,
   onChangeFilter: PropTypes.func.isRequired,
 };

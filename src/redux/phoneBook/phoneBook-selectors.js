@@ -1,18 +1,19 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from '@reduxjs/toolkit';
 
-const getLoading = (state) => state.contacts.loading;
-const getAllContacts = (state) => state.contacts.items;
-const getFilter = (state) => state.contacts.filter;
-const getError = (state) => state.contacts.error;
+const getLoading = state => state.contacts.loading;
+const getAllContacts = state => state.contacts.items;
+const getFilter = state => state.contacts.filter;
+const getError = state => state.contacts.error;
 
 const getFilteredContacts = createSelector(
   [getAllContacts, getFilter],
   (allContacts, filter) => {
-    return allContacts.filter((contact) =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
+    return allContacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase()),
     );
-  }
+  },
 );
+/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   getLoading,
   getAllContacts,
