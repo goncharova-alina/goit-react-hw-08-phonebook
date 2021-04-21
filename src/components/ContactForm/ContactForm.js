@@ -1,111 +1,105 @@
-import React, { Component } from "react";
-import { CSSTransition } from "react-transition-group";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-
-import "./ContactForm.css";
-import phoneBookOperations from "../../redux/phoneBook/phoneBook-operations";
-import phoneBookSelectors from "../../redux/phoneBook/phoneBook-selectors";
-
-const INITIAL_STATE = {
-  name: "",
-  number: "",
-  alert: false,
-};
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import phoneBookOperations from '../../redux/phoneBook/phoneBook-operations';
+import phoneBookSelectors from '../../redux/phoneBook/phoneBook-selectors';
+import ErrorPopup from '../ErrorPopup/ErrorPopup';
+import PropTypes from 'prop-types';
+import s from './ContactForm.module.css';
 
 class ContactForm extends Component {
-  state = INITIAL_STATE;
-
-  handleChange = (type, e) => {
-    const { contacts } = this.props;
-    if (type === "name") {
-      const contactInState = contacts.find(
-        (contact) => contact.name.toLowerCase() === e.target.value.toLowerCase()
-      );
-      if (contactInState) {
-        this.setState({ alert: true });
-      }
-    }
-    this.setState({ [type]: e.target.value });
+  static propTypes = {
+    contacts: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+        number: PropTypes.string,
+      }),
+    ),
+    onAddContact: PropTypes.func.isRequired,
+  };
+  state = {
+    name: '',
+    number: '',
+    error: false,
+    errorMessage: null,
   };
 
-  handleSubmit = (e) => {
+  reset() {
+    this.setState({ name: '', number: '' });
+  }
+
+  handleChangeInput = e => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleSubmit = e => {
     e.preventDefault();
     const { name, number } = this.state;
-    const { onAddContact, contacts } = this.props;
-    const contactInState = contacts.find(
-      (contact) => contact.name.toLowerCase() === name.toLowerCase()
-    );
-    contactInState && this.setState({ alert: true });
-    if (!contactInState && name && number) {
-      onAddContact(name, number);
-      this.setState(INITIAL_STATE);
+    const contacts = this.props.contacts;
+
+    if (contacts.some(contact => contact.name === name)) {
+      this.setState({
+        errorMessage: 'Этот контакт уже существует',
+      });
+      setTimeout(() => {
+        this.setState({ errorMessage: null });
+      }, 3000);
+      this.reset();
       return;
     }
-  };
 
-  changeState = () => {
-    setTimeout(() => this.setState({ alert: false }), 2000);
+    this.props.onAddContact(name, number);
+    this.reset();
   };
 
   render() {
-    const { name, number, alert } = this.state;
+    const { name, number, errorMessage } = this.state;
+
     return (
-      <>
-        <form onSubmit={this.handleSubmit}>
-          <h3>Name</h3>
-          <label>
+      <div>
+        <ErrorPopup message={errorMessage} />
+        <form className={s.wrapper} onSubmit={this.handleSubmit}>
+          <label className={s.field}>
+            <span className={s.name}>Name</span>
             <input
+              className={s.input}
               type="text"
+              name="name"
               value={name}
-              onChange={(e) => this.handleChange("name", e)}
+              placeholder="Enter name"
+              onChange={this.handleChangeInput}
+              required
             />
           </label>
-          <br />
-          <h3>Number</h3>
-          <label>
+          <label className={s.field}>
+            <span className={s.number}>Number</span>
             <input
+              className={s.input}
               type="tel"
+              name="number"
               value={number}
-              onChange={(e) => this.handleChange("number", e)}
+              placeholder="Enter number"
+              onChange={this.handleChangeInput}
+              required
             />
           </label>
-          <br />
-          <button type="submit" className="buttonForm">
+          <button className={s.button} type="submit">
             Add contact
           </button>
         </form>
-        <CSSTransition
-          onEntered={() => this.changeState()}
-          in={alert}
-          timeout={500}
-          classNames="Alert-anime"
-          unmountOnExit
-        >
-          <p className="Alert-wrp">This name is already in contacts!</p>
-        </CSSTransition>
-      </>
+      </div>
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  contacts: phoneBookSelectors.getContacts(state),
+const mapStateToProps = state => ({
+  contacts: phoneBookSelectors.getAllContacts(state),
 });
 
-const mapDispatchToProps = {
-  onAddContact: phoneBookOperations.addContact,
-};
+const mapDispatchToProps = dispatch => ({
+  onAddContact: (name, number) =>
+    dispatch(phoneBookOperations.addContact(name, number)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
-
-ContactForm.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-    })
-  ),
-  onAddContact: PropTypes.func.isRequired,
-};
